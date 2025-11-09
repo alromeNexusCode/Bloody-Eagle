@@ -887,37 +887,6 @@
 **/*.zip
 
 # ==============================================================================
-# UNITY GAME ENGINE
-# ==============================================================================
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-Assets/AssetStoreTools*
-
-# Unity3D generated meta files
-*.pidb.meta
-*.pdb.meta
-*.mdb.meta
-
-# Unity3D generated file on crash reports
-sysinfo.txt
-
-# Builds
-*.apk
-*.aab
-*.unitypackage
-*.app
-
-# Packed Addressables
-[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
-
-# Temporary auto-generated Android Assets
-[Aa]ssets/[Ss]treamingAssets/aa.meta
-[Aa]ssets/[Ss]treamingAssets/aa/*
-
-# ==============================================================================
 # PROJECT SPECIFIC
 # ==============================================================================
 # Add your project-specific ignores here
