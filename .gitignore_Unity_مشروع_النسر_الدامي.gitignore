@@ -1,0 +1,31 @@
+# .gitignore
+# ملف لتجاهل الملفات غير الضرورية في مشروع Unity/C#
+
+# ملفات المشروع المؤقتة/المحلية
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+
+# ملفات المحرك
+/[Aa]ssets/[Dd]emoland/
+/[Aa]ssets/Plugins/iOS/
+/[Aa]ssets/Plugins/Android/
+
+# ملفات تعريف المستخدم والمشروع المحلية
+*.csproj
+*.unityproj
+*.sln
+*.user
+*.usr
+*.pdb
+*.pid
+*.suo
+
+# ملفات Log
+*.log
+
+# ملفات النظام
+.DS_Store
+Thumbs.db
