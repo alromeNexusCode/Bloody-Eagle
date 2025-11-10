@@ -438,11 +438,15 @@ const LoadingSystem = {
     
     hide() {
         const loadingScreen = document.getElementById('loading-screen');
+        console.log('Hiding loading screen...', loadingScreen); // Debug
         if (loadingScreen) {
             loadingScreen.classList.add('hidden');
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
+                console.log('Loading screen removed from DOM'); // Debug
             }, 500);
+        } else {
+            console.error('Loading screen not found!'); // Debug
         }
     },
     
@@ -460,6 +464,10 @@ const LoadingSystem = {
         this.setupCounterAnimations();
     }
 };
+
+// إضافة دوال مساعدة للـ window object
+window.hideLoadingScreen = hideLoadingScreen;
+window.LoadingSystem = LoadingSystem;
 
 // نظام الأنيميشن المتقدم
 const AnimationSystem = {
@@ -806,10 +814,29 @@ function downloadBusinessPlan() {
     alert('سيتم تحميل خطة العمل...');
 }
 
+// دالة لإزالة الـ loading screen فوراً (حل سريع)
+function hideLoadingScreen() {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+        console.log('Force hiding loading screen...');
+        loadingScreen.style.display = 'none';
+        loadingScreen.classList.add('hidden');
+        return true;
+    }
+    return false;
+}
+
 // تهيئة جميع الأنظمة عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', function() {
     // تهيئة النظام الأساسي
     LoadingSystem.init();
+    
+    // إزالة الـ loading screen بعد 3 ثوان على الأقل
+    setTimeout(() => {
+        console.log('Auto-hiding loading screen after timeout');
+        LoadingSystem.hide();
+    }, 3500); // 3.5 seconds
+    
     TranslationSystem.init();
     NavigationSystem.init();
     AdminModalSystem.init();
