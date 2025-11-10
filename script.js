@@ -1105,4 +1105,370 @@ const pwaStyles = `
 const pwaStyleSheet = document.createElement('style');
 pwaStyleSheet.textContent = pwaStyles;
 document.head.appendChild(pwaStyleSheet);
+
+// Firebase Configuration
+const firebaseConfig = {
+    // يجب إضافة Firebase project credentials هنا
+    // للحصول عليها: https://console.firebase.google.com/
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+if (typeof firebase !== 'undefined') {
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+} else {
+    console.error('Firebase SDK not loaded. Please check the script tags in index.html');
+}
+
+// Authentication System
+const AuthSystem = {
+    // Current user
+    currentUser: null,
+    
+    // Initialize auth system
+    init() {
+        // Listen for auth state changes
+        auth.onAuthStateChanged((user) => {
+            this.currentUser = user;
+            this.updateUIForUser(user);
+        });
+        
+        // Setup modal event listeners
+        this.setupModalEvents();
+    },
+    
+    // Update UI based on user state
+    updateUIForUser(user) {
+        const loginBtn = document.getElementById('loginBtn');
+        const userProfile = document.getElementById('userProfile');
+        const authModals = document.querySelectorAll('.auth-modal');
+        
+        if (user) {
+            // User is logged in
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (userProfile) {
+                userProfile.style.display = 'block';
+                // Update user info
+                const userEmail = userProfile.querySelector('.user-email');
+                const userName = userProfile.querySelector('.user-name');
+                if (userEmail) userEmail.textContent = user.email;
+                if (userName) userName.textContent = user.displayName || user.email.split('@')[0];
+            }
+        } else {
+            // User is logged out
+            if (loginBtn) loginBtn.style.display = 'block';
+            if (userProfile) userProfile.style.display = 'none';
+            // Hide all modals
+            authModals.forEach(modal => modal.style.display = 'none');
+        }
+    },
+    
+    // Setup modal event listeners
+    setupModalEvents() {
+        // Login button
+        const loginBtn = document.getElementById('loginBtn');
+        if (loginBtn) {
+            loginBtn.addEventListener('click', () => this.showLoginModal());
+        }
+        
+        // Modal close buttons
+        const closeBtns = document.querySelectorAll('.auth-modal .close');
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const modal = e.target.closest('.auth-modal');
+                if (modal) this.hideModal(modal);
+            });
+        });
+        
+        // Close modal on outside click
+        const modals = document.querySelectorAll('.auth-modal');
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    this.hideModal(modal);
+                }
+            });
+        });
+        
+        // Form submissions
+        this.setupFormSubmissions();
+    },
+    
+    // Setup form submissions
+    setupFormSubmissions() {
+        // Login form
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.login(
+                    document.getElementById('loginEmail').value,
+                    document.getElementById('loginPassword').value
+                );
+            });
+        }
+        
+        // Signup form
+        const signupForm = document.getElementById('signupForm');
+        if (signupForm) {
+            signupForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.signup(
+                    document.getElementById('signupEmail').value,
+                    document.getElementById('signupPassword').value,
+                    document.getElementById('signupName').value
+                );
+            });
+        }
+        
+        // Forgot password form
+        const forgotForm = document.getElementById('forgotForm');
+        if (forgotForm) {
+            forgotForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.forgotPassword(document.getElementById('forgotEmail').value);
+            });
+        }
+    },
+    
+    // Show/hide modals
+    showLoginModal() {
+        this.hideAllModals();
+        const modal = document.getElementById('loginModal');
+        if (modal) modal.style.display = 'block';
+    },
+    
+    showSignupModal() {
+        this.hideAllModals();
+        const modal = document.getElementById('signupModal');
+        if (modal) modal.style.display = 'block';
+    },
+    
+    showForgotModal() {
+        this.hideAllModals();
+        const modal = document.getElementById('forgotModal');
+        if (modal) modal.style.display = 'block';
+    },
+    
+    showUserProfile() {
+        const modal = document.getElementById('userProfileModal');
+        if (modal) modal.style.display = 'block';
+    },
+    
+    hideAllModals() {
+        const modals = document.querySelectorAll('.auth-modal');
+        modals.forEach(modal => modal.style.display = 'none');
+    },
+    
+    hideModal(modal) {
+        if (modal) modal.style.display = 'none';
+    },
+    
+    // Authentication functions
+    async login(email, password) {
+        try {
+            this.showLoading('loginForm');
+            const result = await auth.signInWithEmailAndPassword(email, password);
+            console.log('تم تسجيل الدخول بنجاح:', result.user);
+            this.showMessage('تم تسجيل الدخول بنجاح!', 'success');
+            this.hideAllModals();
+        } catch (error) {
+            console.error('خطأ في تسجيل الدخول:', error);
+            this.showMessage(this.getArabicErrorMessage(error.code), 'error');
+        } finally {
+            this.hideLoading('loginForm');
+        }
+    },
+    
+    async signup(email, password, name) {
+        try {
+            this.showLoading('signupForm');
+            const result = await auth.createUserWithEmailAndPassword(email, password);
+            
+            // Update user profile with name
+            await result.user.updateProfile({
+                displayName: name
+            });
+            
+            // Add user to Firestore
+            await db.collection('users').doc(result.user.uid).set({
+                email: email,
+                name: name,
+                role: 'visitor', // Default role
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            
+            console.log('تم إنشاء الحساب بنجاح:', result.user);
+            this.showMessage('تم إنشاء الحساب بنجاح!', 'success');
+            this.hideAllModals();
+        } catch (error) {
+            console.error('خطأ في إنشاء الحساب:', error);
+            this.showMessage(this.getArabicErrorMessage(error.code), 'error');
+        } finally {
+            this.hideLoading('signupForm');
+        }
+    },
+    
+    async logout() {
+        try {
+            await auth.signOut();
+            console.log('تم تسجيل الخروج بنجاح');
+            this.showMessage('تم تسجيل الخروج بنجاح!', 'success');
+        } catch (error) {
+            console.error('خطأ في تسجيل الخروج:', error);
+            this.showMessage('حدث خطأ في تسجيل الخروج', 'error');
+        }
+    },
+    
+    async forgotPassword(email) {
+        try {
+            this.showLoading('forgotForm');
+            await auth.sendPasswordResetEmail(email);
+            console.log('تم إرسال رابط إعادة تعيين كلمة المرور');
+            this.showMessage('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني!', 'success');
+            this.hideAllModals();
+        } catch (error) {
+            console.error('خطأ في إعادة تعيين كلمة المرور:', error);
+            this.showMessage(this.getArabicErrorMessage(error.code), 'error');
+        } finally {
+            this.hideLoading('forgotForm');
+        }
+    },
+    
+    // Helper functions
+    showLoading(formId) {
+        const form = document.getElementById(formId);
+        if (form) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.textContent = 'جاري المعالجة...';
+                submitBtn.disabled = true;
+            }
+        }
+    },
+    
+    hideLoading(formId) {
+        const form = document.getElementById(formId);
+        if (form) {
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.textContent = submitBtn.getAttribute('data-original-text') || 'تسجيل الدخول';
+                submitBtn.disabled = false;
+            }
+        }
+    },
+    
+    showMessage(message, type = 'info') {
+        // Create message element
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `auth-message auth-message-${type}`;
+        messageDiv.textContent = message;
+        
+        // Style the message
+        messageDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 10000;
+            font-family: 'Tajawal', Arial, sans-serif;
+            font-size: 14px;
+            max-width: 300px;
+            animation: slideInRight 0.3s ease-out;
+        `;
+        
+        // Add to page
+        document.body.appendChild(messageDiv);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (messageDiv.parentNode) {
+                messageDiv.remove();
+            }
+        }, 5000);
+    },
+    
+    getArabicErrorMessage(errorCode) {
+        const errorMessages = {
+            'auth/user-not-found': 'لا يوجد مستخدم بهذا البريد الإلكتروني',
+            'auth/wrong-password': 'كلمة المرور غير صحيحة',
+            'auth/email-already-in-use': 'هذا البريد الإلكتروني مستخدم بالفعل',
+            'auth/weak-password': 'كلمة المرور ضعيفة جداً (يجب أن تكون 6 أحرف على الأقل)',
+            'auth/invalid-email': 'البريد الإلكتروني غير صحيح',
+            'auth/too-many-requests': 'محاولات كثيرة، يرجى المحاولة لاحقاً',
+            'auth/user-disabled': 'تم تعطيل هذا الحساب',
+            'auth/operation-not-allowed': 'هذه العملية غير مسموحة',
+            'auth/invalid-action-code': 'رمز غير صحيح',
+            'auth/expired-action-code': 'انتهت صلاحية الرمز'
+        };
+        
+        return errorMessages[errorCode] || 'حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى';
+    }
+};
+
+// Initialize auth system when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    AuthSystem.init();
+});
+
+// Wrapper functions for backward compatibility with existing HTML
+function showSignupModal() {
+    AuthSystem.showSignupModal();
+}
+
+function showLoginModal() {
+    AuthSystem.showLoginModal();
+}
+
+function showForgotPassword() {
+    AuthSystem.showForgotModal();
+}
+
+function closeSignupModal() {
+    AuthSystem.hideAllModals();
+}
+
+function logoutUser() {
+    AuthSystem.logout();
+}
+
+function showUserProfile() {
+    AuthSystem.showUserProfile();
+}
+
+// Handle user dropdown
+document.addEventListener('DOMContentLoaded', () => {
+    // Add click event to user profile to show dropdown
+    const userProfile = document.getElementById('userProfile');
+    if (userProfile) {
+        const userProfileInfo = userProfile.querySelector('.user-profile-info');
+        const userDropdown = userProfile.querySelector('.user-dropdown');
+        
+        if (userProfileInfo && userDropdown) {
+            userProfileInfo.addEventListener('click', (e) => {
+                e.stopPropagation();
+                userDropdown.classList.toggle('show');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', () => {
+                userDropdown.classList.remove('show');
+            });
+        }
+    }
+});
+
+// Export for global use
+window.AuthSystem = AuthSystem;
 window.AdminModalSystem = AdminModalSystem;
