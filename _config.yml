@@ -1,0 +1,21 @@
+# ملف لتجنب Jekyll
+# هذا الملف يطلب من GitHub Pages عدم معالجة الموقع كـ Jekyll
+
+# تعطيل plugins
+plugins: []
+
+# تعطيل markdown processing
+markdown: kramdown
+
+# عناوين أخرى
+title: "النسر الدامي - Bloody Eagle"
+description: "Islamic Andalusian MMO Strategy Game"
+author: "MiniMax Agent"
+
+# exclude sensitive files
+exclude:
+  - "*.md"
+  - ".git"
+  - ".gitignore"
+  - "README.md"
+  - "LICENSE"
