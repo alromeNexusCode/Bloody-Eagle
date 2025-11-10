@@ -1444,8 +1444,89 @@ const AuthSystem = {
         };
         
         return errorMessages[errorCode] || 'حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى';
+    },
+
+    async loginWithGoogle() {
+        try {
+            this.showLoading('loginForm');
+            
+            // Create Google Auth provider
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            // Add additional scopes if needed
+            provider.addScope('profile');
+            provider.addScope('email');
+            
+            // Sign in with popup
+            const result = await auth.signInWithPopup(provider);
+            const user = result.user;
+            
+            console.log('تم تسجيل الدخول بنجاح عبر Google:', user.email);
+            this.showMessage('تم تسجيل الدخول بنجاح!', 'success');
+            
+            // Close any open modals
+            this.hideAllModals();
+            
+        } catch (error) {
+            console.error('خطأ في تسجيل الدخول عبر Google:', error);
+            
+            if (error.code === 'auth/popup-closed-by-user') {
+                this.showMessage('تم إغلاق النافذة المنبثقة، يرجى المحاولة مرة أخرى', 'error');
+            } else if (error.code === 'auth/popup-blocked') {
+                this.showMessage('تم حظر النافذة المنبثقة، يرجى السماح بالنوافذ المنبثقة وإعادة المحاولة', 'error');
+            } else {
+                this.showMessage(this.getArabicErrorMessage(error.code), 'error');
+            }
+        } finally {
+            this.hideLoading('loginForm');
+        }
+    },
+
+    async loginWithGitHub() {
+        try {
+            this.showLoading('loginForm');
+            
+            // Create GitHub Auth provider
+            const provider = new firebase.auth.GithubAuthProvider();
+            
+            // Add scopes
+            provider.addScope('read:user');
+            provider.addScope('user:email');
+            
+            // Sign in with popup
+            const result = await auth.signInWithPopup(provider);
+            const user = result.user;
+            
+            console.log('تم تسجيل الدخول بنجاح عبر GitHub:', user.email || user.displayName);
+            this.showMessage('تم تسجيل الدخول بنجاح!', 'success');
+            
+            // Close any open modals
+            this.hideAllModals();
+            
+        } catch (error) {
+            console.error('خطأ في تسجيل الدخول عبر GitHub:', error);
+            
+            if (error.code === 'auth/popup-closed-by-user') {
+                this.showMessage('تم إغلاق النافذة المنبثقة، يرجى المحاولة مرة أخرى', 'error');
+            } else if (error.code === 'auth/popup-blocked') {
+                this.showMessage('تم حظر النافذة المنبثقة، يرجى السماح بالنوافذ المنبثقة وإعادة المحاولة', 'error');
+            } else {
+                this.showMessage(this.getArabicErrorMessage(error.code), 'error');
+            }
+        } finally {
+            this.hideLoading('loginForm');
+        }
     }
 };
+
+// Make auth functions globally accessible
+function loginWithGoogle() {
+    AuthSystem.loginWithGoogle();
+}
+
+function loginWithGitHub() {
+    AuthSystem.loginWithGitHub();
+}
 
 // Initialize auth system when page loads
 document.addEventListener('DOMContentLoaded', () => {
