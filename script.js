@@ -1108,14 +1108,13 @@ document.head.appendChild(pwaStyleSheet);
 
 // Firebase Configuration
 const firebaseConfig = {
-    // يجب إضافة Firebase project credentials هنا
-    // للحصول عليها: https://console.firebase.google.com/
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    // Firebase project credentials from Coffee Spark AI Barista
+    apiKey: "AIzaSyD1GxEXR-4thNqgiGGSwoBGYDSYRsdSaZo",
+    authDomain: "coffee-spark-ai-barista-33762.firebaseapp.com",
+    projectId: "coffee-spark-ai-barista-33762",
+    storageBucket: "coffee-spark-ai-barista-33762.firebasestorage.app",
+    messagingSenderId: "537340284437",
+    appId: "1:537340284437:web:fd91105b7f5810513e881c"
 };
 
 // Initialize Firebase
