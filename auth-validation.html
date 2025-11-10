@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار عناصر Authentication - النسر الدامي</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .validation-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .validation-section {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .success { border-color: #27ae60; background: rgba(39, 174, 96, 0.1); }
+        .error { border-color: #e74c3c; background: rgba(231, 76, 60, 0.1); }
+        .warning { border-color: #f39c12; background: rgba(243, 156, 18, 0.1); }
+        
+        .status-icon {
+            font-size: 24px;
+            margin-left: 10px;
+        }
+        
+        .test-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .test-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .test-item:last-child { border-bottom: none; }
+    </style>
+</head>
+<body>
+    <div class="validation-container">
+        <h1>🔍 اختبار نظام Authentication</h1>
+        <p>فحص شامل لعناصر النظام وتصميم النماذج</p>
+        
+        <div id="test-results">
+            <div class="validation-section warning">
+                <h3><span class="status-icon">⚠️</span>جاري التحقق...</h3>
+                <p>يتم فحص النظام حالياً...</p>
+            </div>
+        </div>
+        
+        <div class="validation-section">
+            <h3>🧪 اختبارات مباشرة</h3>
+            <button onclick="testModals()" class="auth-btn" style="margin: 10px;">
+                اختبار فتح النماذج
+            </button>
+            <button onclick="checkElements()" class="auth-btn secondary" style="margin: 10px;">
+                فحص العناصر
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // Check if Firebase scripts are loaded
+        function checkFirebaseScripts() {
+            const results = document.getElementById('test-results');
+            const tests = [];
+            
+            // Check Firebase script tags
+            const hasFirebase = typeof window.firebase !== 'undefined';
+            tests.push({
+                name: 'Firebase SDK',
+                status: hasFirebase ? 'success' : 'error',
+                message: hasFirebase ? 'Firebase متوفر' : 'Firebase SDK غير متوفر'
+            });
+            
+            // Check modal elements
+            const loginModal = document.getElementById('login-modal');
+            const signupModal = document.getElementById('signup-modal');
+            const forgotModal = document.getElementById('forgot-modal');
+            
+            tests.push({
+                name: 'Login Modal',
+                status: loginModal ? 'success' : 'error',
+                message: loginModal ? 'موجود' : 'غير موجود'
+            });
+            
+            tests.push({
+                name: 'Signup Modal',
+                status: signupModal ? 'success' : 'error',
+                message: signupModal ? 'موجود' : 'غير موجود'
+            });
+            
+            tests.push({
+                name: 'Forgot Password Modal',
+                status: forgotModal ? 'success' : 'error',
+                message: forgotModal ? 'موجود' : 'غير موجود'
+            });
+            
+            // Check form elements
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            
+            tests.push({
+                name: 'Login Form',
+                status: loginForm ? 'success' : 'error',
+                message: loginForm ? 'موجود' : 'غير موجود'
+            });
+            
+            tests.push({
+                name: 'Signup Form',
+                status: signupForm ? 'success' : 'error',
+                message: signupForm ? 'موجود' : 'غير موجود'
+            });
+            
+            // Check AuthSystem
+            tests.push({
+                name: 'AuthSystem Object',
+                status: typeof AuthSystem !== 'undefined' ? 'success' : 'error',
+                message: typeof AuthSystem !== 'undefined' ? 'موجود' : 'غير موجود'
+            });
+            
+            return tests;
+        }
+        
+        function displayResults() {
+            const tests = checkFirebaseScripts();
+            const results = document.getElementById('test-results');
+            
+            let html = '<h2>نتائج الفحص</h2>';
+            
+            tests.forEach(test => {
+                const statusClass = test.status;
+                const icon = test.status === 'success' ? '✅' : '❌';
+                
+                html += `
+                    <div class="validation-section ${statusClass}">
+                        <h4>${icon} ${test.name}: ${test.message}</h4>
+                    </div>
+                `;
+            });
+            
+            results.innerHTML = html;
+        }
+        
+        function testModals() {
+            try {
+                // Test if functions exist
+                if (typeof showLoginModal === 'function') {
+                    showLoginModal();
+                    console.log('✅ showLoginModal() worked');
+                } else {
+                    console.log('❌ showLoginModal() not found');
+                }
+                
+                if (typeof showSignupModal === 'function') {
+                    setTimeout(() => {
+                        if (typeof showLoginModal === 'function') {
+                            showLoginModal();
+                        }
+                        showSignupModal();
+                        console.log('✅ showSignupModal() worked');
+                    }, 1000);
+                }
+            } catch (error) {
+                console.error('❌ Error testing modals:', error);
+            }
+        }
+        
+        function checkElements() {
+            const elements = [
+                'login-btn', 'signup-btn', 'user-profile', 
+                'login-modal', 'signup-modal', 'forgot-modal',
+                'login-form', 'signup-form'
+            ];
+            
+            console.log('🔍 Checking elements:');
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    console.log(`✅ ${id}: Found`);
+                } else {
+                    console.log(`❌ ${id}: Not found`);
+                }
+            });
+        }
+        
+        // Run validation on page load
+        window.addEventListener('load', () => {
+            setTimeout(displayResults, 500);
+        });
+        
+        // Check if this is being tested in a different context
+        if (window.location.href.includes('index.html')) {
+            console.log('🔍 Running validation in main page context');
+        } else {
+            console.log('🔍 Running validation in test page context');
+        }
+    </script>
+</body>
+</html>
