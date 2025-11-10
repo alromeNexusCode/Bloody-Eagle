@@ -1,0 +1,29 @@
+# Robots.txt for النسر الدامي (Bloody Eagle)
+# Allowed crawlers to index the site
+
+User-agent: *
+Allow: /
+
+# Specific bot allowances
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 2
+
+User-agent: Yandex
+Allow: /
+Crawl-delay: 2
+
+# File to disallow (none for public site)
+# Disallow: /admin/
+# Disallow: /private/
+
+# Sitemap location
+Sitemap: https://alromeNexusCode.github.io/Bloody-Eagle/sitemap.xml
+
+# Caching instructions
+# Allow all content to be cached
+Cache-Control: public, max-age=86400

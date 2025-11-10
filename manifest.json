@@ -1,0 +1,65 @@
+{
+    "name": "النسر الدامي - Bloody Eagle",
+    "short_name": "النسر الدامي",
+    "description": "أكبر لعبة استراتيجية عربية في التاريخ - مشروع استثماري استثنائي",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0D1117",
+    "theme_color": "#D4AF37",
+    "orientation": "portrait-primary",
+    "dir": "rtl",
+    "lang": "ar",
+    "scope": "/",
+    "icons": [
+        {
+            "src": "assets/images/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "assets/images/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": ["games", "entertainment", "business"],
+    "shortcuts": [
+        {
+            "name": "الإحصائيات",
+            "short_name": "Stats",
+            "description": "عرض إحصائيات المشروع الاستثماري",
+            "url": "/#stats",
+            "icons": [{ "src": "assets/images/icon-192.png", "sizes": "192x192" }]
+        },
+        {
+            "name": "خريطة الطريق",
+            "short_name": "Roadmap",
+            "description": "خطة التطوير والجدولة الزمنية",
+            "url": "/#roadmap",
+            "icons": [{ "src": "assets/images/icon-192.png", "sizes": "192x192" }]
+        },
+        {
+            "name": "التواصل",
+            "short_name": "Contact",
+            "description": "التواصل مع فريق المشروع",
+            "url": "/#contact",
+            "icons": [{ "src": "assets/images/icon-192.png", "sizes": "192x192" }]
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "assets/images/screenshot-wide.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "assets/images/screenshot-narrow.png",
+            "sizes": "360x640",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ]
+}

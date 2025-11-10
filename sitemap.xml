@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+    
+    <!-- الصفحة الرئيسية -->
+    <url>
+        <loc>https://alromeNexusCode.github.io/Bloody-Eagle/</loc>
+        <lastmod>2025-11-10</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- الفروع باللغات المختلفة -->
+    <url>
+        <loc>https://alromeNexusCode.github.io/Bloody-Eagle/?lang=en</loc>
+        <lastmod>2025-11-10</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <url>
+        <loc>https://alromeNexusCode.github.io/Bloody-Eagle/?lang=fr</loc>
+        <lastmod>2025-11-10</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://alromeNexusCode.github.io/Bloody-Eagle/?lang=de</loc>
+        <lastmod>2025-11-10</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://alromeNexusCode.github.io/Bloody-Eagle/?lang=es</loc>
+        <lastmod>2025-11-10</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://alromeNexusCode.github.io/Bloody-Eagle/?lang=tr</loc>
+        <lastmod>2025-11-10</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://alromeNexusCode.github.io/Bloody-Eagle/?lang=ru</loc>
+        <lastmod>2025-11-10</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://alromeNexusCode.github.io/Bloody-Eagle/?lang=zh</loc>
+        <lastmod>2025-11-10</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://alromeNexusCode.github.io/Bloody-Eagle/?lang=ja</loc>
+        <lastmod>2025-11-10</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://alromeNexusCode.github.io/Bloody-Eagle/?lang=ko</loc>
+        <lastmod>2025-11-10</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+</urlset>

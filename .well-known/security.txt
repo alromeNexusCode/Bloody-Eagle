@@ -1,0 +1,5 @@
+Contact: security@bloodyeaglemmo.com
+Preferred-Languages: en, ar
+Policy: https://alromeNexusCode.github.io/Bloody-Eagle/security-policy.html
+Hiring: https://alromeNexusCode.github.io/Bloody-Eagle/careers.html
+Expires: 2025-12-31T23:59:59.000Z
