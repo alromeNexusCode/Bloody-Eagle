@@ -107,6 +107,13 @@
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
     
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-functions-compat.js"></script>
+    
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#D4AF37">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -166,6 +173,42 @@
                     <i class="fas fa-download"></i>
                     <span data-translate="pwa_install">تثبيت</span>
                 </button>
+                
+                <!-- User Status & Auth -->
+                <div class="user-status" id="user-status">
+                    <button class="login-btn" onclick="showLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>تسجيل الدخول</span>
+                    </button>
+                    <button class="signup-btn" onclick="showSignupModal()">
+                        <i class="fas fa-user-plus"></i>
+                        <span>إنشاء حساب</span>
+                    </button>
+                </div>
+                
+                <!-- User Logged In Status -->
+                <div class="user-authenticated" id="user-authenticated" style="display: none;">
+                    <button class="user-btn" onclick="showDashboard()">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span id="user-name-nav">مرحباً</span>
+                    </button>
+                    <div class="user-dropdown">
+                        <a href="#" onclick="showDashboard()">
+                            <i class="fas fa-tachometer-alt"></i>
+                            لوحة التحكم
+                        </a>
+                        <a href="#" onclick="showProfile()">
+                            <i class="fas fa-user-cog"></i>
+                            الملف الشخصي
+                        </a>
+                        <a href="#" onclick="logoutUser()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            تسجيل الخروج
+                        </a>
+                    </div>
+                </div>
                 <div class="hamburger">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -561,6 +604,281 @@
                 <!-- Dynamic content will be loaded here -->
             </div>
         </div>
+    </div>
+
+    <!-- Authentication Modals -->
+    <!-- Login Modal -->
+    <div id="login-modal" class="auth-modal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <i class="fas fa-eagle"></i>
+                <h2>تسجيل الدخول</h2>
+                <p>مكتبة غرناطه - النظام الشامل</p>
+            </div>
+            
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <label for="login-email">البريد الإلكتروني</label>
+                    <input type="email" id="login-email" required placeholder="أدخل بريدك الإلكتروني">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">كلمة المرور</label>
+                    <input type="password" id="login-password" required placeholder="أدخل كلمة المرور">
+                </div>
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    تسجيل الدخول
+                </button>
+            </form>
+            
+            <div class="auth-options">
+                <a href="#" onclick="showSignup()">إنشاء حساب جديد</a>
+                <a href="#" onclick="showForgotPassword()">نسيت كلمة المرور؟</a>
+            </div>
+            
+            <div class="auth-divider">
+                <span>أو</span>
+            </div>
+            
+            <div class="social-auth">
+                <button class="social-btn google-btn" onclick="loginWithGoogle()">
+                    <i class="fab fa-google"></i>
+                    تسجيل الدخول بجوجل
+                </button>
+                <button class="social-btn github-btn" onclick="loginWithGitHub()">
+                    <i class="fab fa-github"></i>
+                    تسجيل الدخول بـ GitHub
+                </button>
+            </div>
+            
+            <button class="auth-close" onclick="closeLoginModal()">&times;</button>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signup-modal" class="auth-modal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <i class="fas fa-user-plus"></i>
+                <h2>إنشاء حساب جديد</h2>
+                <p>انضم إلى مجتمع مكتبة غرناطه</p>
+            </div>
+            
+            <form id="signup-form" class="auth-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="signup-name">الاسم الكامل</label>
+                        <input type="text" id="signup-name" required placeholder="اسمك الكامل">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-role">نوع الحساب</label>
+                        <select id="signup-role" required>
+                            <option value="">اختر نوع الحساب</option>
+                            <option value="investor">مستثمر</option>
+                            <option value="player">لاعب</option>
+                            <option value="developer">مطور</option>
+                            <option value="partner">شريك</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">البريد الإلكتروني</label>
+                    <input type="email" id="signup-email" required placeholder="أدخل بريدك الإلكتروني">
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">كلمة المرور</label>
+                    <input type="password" id="signup-password" required placeholder="أدخل كلمة مرور قوية">
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm">تأكيد كلمة المرور</label>
+                    <input type="password" id="signup-confirm" required placeholder="أعد إدخال كلمة المرور">
+                </div>
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="signup-terms" required>
+                        <span class="checkmark"></span>
+                        أوافق على <a href="#" target="_blank">الشروط والأحكام</a>
+                    </label>
+                </div>
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-user-plus"></i>
+                    إنشاء الحساب
+                </button>
+            </form>
+            
+            <div class="auth-options">
+                <a href="#" onclick="showLogin()">لديك حساب بالفعل؟ تسجيل الدخول</a>
+            </div>
+            
+            <button class="auth-close" onclick="closeSignupModal()">&times;</button>
+        </div>
+    </div>
+
+    <!-- Dashboard Modal -->
+    <div id="dashboard-modal" class="dashboard-modal">
+        <div class="dashboard-container">
+            <div class="dashboard-sidebar">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 id="user-name">مرحباً</h3>
+                    <p id="user-role">نوع الحساب</p>
+                </div>
+                
+                <nav class="dashboard-nav">
+                    <button class="nav-item active" onclick="showDashboardSection('overview')">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>نظرة عامة</span>
+                    </button>
+                    <button class="nav-item" onclick="showDashboardSection('investments')" id="investments-nav">
+                        <i class="fas fa-chart-line"></i>
+                        <span>استثماراتي</span>
+                    </button>
+                    <button class="nav-item" onclick="showDashboardSection('community')">
+                        <i class="fas fa-users"></i>
+                        <span>المجتمع</span>
+                    </button>
+                    <button class="nav-item" onclick="showDashboardSection('messages')">
+                        <i class="fas fa-comments"></i>
+                        <span>الرسائل</span>
+                    </button>
+                    <button class="nav-item" onclick="showDashboardSection('settings')">
+                        <i class="fas fa-cog"></i>
+                        <span>الإعدادات</span>
+                    </button>
+                    <button class="nav-item admin-only" onclick="showAdminPanel()" id="admin-nav" style="display: none;">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>لوحة الإدارة</span>
+                    </button>
+                </nav>
+                
+                <button class="logout-btn" onclick="logoutUser()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    تسجيل الخروج
+                </button>
+            </div>
+            
+            <div class="dashboard-content">
+                <div class="dashboard-header">
+                    <h2 id="dashboard-title">نظرة عامة</h2>
+                    <button class="close-dashboard" onclick="closeDashboard()">&times;</button>
+                </div>
+                
+                <div id="dashboard-sections">
+                    <!-- Overview Section -->
+                    <div id="overview-section" class="dashboard-section">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <i class="fas fa-dollar-sign"></i>
+                                <h3>0 $</h3>
+                                <p>إجمالي الاستثمار</p>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-percentage"></i>
+                                <h3>0%</h3>
+                                <p>العائد المتوقع</p>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-users"></i>
+                                <h3>0</h3>
+                                <p>الأعضاء النشطون</p>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-clock"></i>
+                                <h3>0 يوم</h3>
+                                <p>مدة الاستثمار</p>
+                            </div>
+                        </div>
+                        
+                        <div class="recent-activity">
+                            <h3>النشاط الأخير</h3>
+                            <div class="activity-item">
+                                <i class="fas fa-info-circle"></i>
+                                <p>مرحباً بك في مكتبة غرناطه</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Investments Section -->
+                    <div id="investments-section" class="dashboard-section" style="display: none;">
+                        <div class="investment-form">
+                            <h3>استثمار جديد</h3>
+                            <form id="investment-form">
+                                <div class="form-group">
+                                    <label>مبلغ الاستثمار ($)</label>
+                                    <input type="number" id="investment-amount" min="100" placeholder="أدخل المبلغ">
+                                </div>
+                                <div class="form-group">
+                                    <label>نوع الاستثمار</label>
+                                    <select id="investment-type">
+                                        <option value="seed">البداية (Seed)</option>
+                                        <option value="early">المرحلة المبكرة (Early Stage)</option>
+                                        <option value="growth">النمو (Growth)</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-primary">استثمار</button>
+                            </form>
+                        </div>
+                        
+                        <div class="investment-list">
+                            <h3>استثماراتي</h3>
+                            <div id="investments-list">
+                                <p class="no-investments">لا توجد استثمارات بعد</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Community Section -->
+                    <div id="community-section" class="dashboard-section" style="display: none;">
+                        <div class="chat-container">
+                            <h3>محادثات المجتمع</h3>
+                            <div id="chat-messages" class="chat-messages">
+                                <div class="message">
+                                    <div class="message-header">
+                                        <span class="sender">النظام</span>
+                                        <span class="time">الآن</span>
+                                    </div>
+                                    <p>مرحباً بك في مجتمع مكتبة غرناطه!</p>
+                                </div>
+                            </div>
+                            <div class="chat-input">
+                                <input type="text" id="chat-message" placeholder="اكتب رسالتك...">
+                                <button onclick="sendChatMessage()">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Settings Section -->
+                    <div id="settings-section" class="dashboard-section" style="display: none;">
+                        <h3>إعدادات الحساب</h3>
+                        <form id="settings-form">
+                            <div class="form-group">
+                                <label>الاسم</label>
+                                <input type="text" id="settings-name">
+                            </div>
+                            <div class="form-group">
+                                <label>البريد الإلكتروني</label>
+                                <input type="email" id="settings-email">
+                            </div>
+                            <div class="form-group">
+                                <label>رقم الهاتف</label>
+                                <input type="tel" id="settings-phone">
+                            </div>
+                            <button type="submit" class="btn-primary">حفظ التغييرات</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>جاري التحميل...</p>
     </div>
 
     <!-- Google Translate Widget (اختياري) -->
