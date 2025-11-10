@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار نظام Authentication - النسر الدامي</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@200;300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Test Page Styles */
+        .test-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .test-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .test-title {
+            color: #1e3c72;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-family: 'Amiri', serif;
+        }
+        
+        .test-subtitle {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .test-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .test-btn {
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(42, 82, 152, 0.4);
+        }
+        
+        .test-info {
+            background: rgba(42, 82, 152, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 4px solid #2a5298;
+        }
+        
+        .test-info h3 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .test-info p {
+            color: #555;
+            line-height: 1.6;
+            font-family: 'Tajawal', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-content">
+            <h1 class="test-title">النسر الدامي</h1>
+            <h2 class="test-subtitle">اختبار نظام Authentication</h2>
+            
+            <div class="test-info">
+                <h3>🔧 اختبار المكونات:</h3>
+                <p>تأكد من عمل جميع عناصر الواجهة بشكل صحيح</p>
+            </div>
+            
+            <div class="test-buttons">
+                <a href="index.html" class="test-btn">
+                    <i class="fas fa-home"></i>
+                    العودة للموقع الرئيسي
+                </a>
+                
+                <button class="test-btn" onclick="testLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    اختبار Login Modal
+                </button>
+                
+                <button class="test-btn" onclick="testSignupModal()">
+                    <i class="fas fa-user-plus"></i>
+                    اختبار Signup Modal
+                </button>
+                
+                <button class="test-btn" onclick="testUserProfile()">
+                    <i class="fas fa-user"></i>
+                    اختبار User Profile
+                </button>
+            </div>
+            
+            <div class="test-info">
+                <h3>⚠️ ملاحظات:</h3>
+                <p>• Firebase غير مكون بعد (لاختبار UI فقط)<br>
+                • النماذج ستظهر رسائل خطأ بدون backend<br>
+                • اختبر التصميم والتفاعل فقط</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Include original modals and scripts -->
+    <script src="script.js"></script>
+    
+    <script>
+        // Test functions
+        function testLoginModal() {
+            // Simulate showing login modal
+            console.log('اختبار Login Modal');
+            
+            // Create test modal for demonstration
+            const testModal = document.createElement('div');
+            testModal.className = 'auth-modal';
+            testModal.style.display = 'block';
+            testModal.innerHTML = `
+                <div class="auth-container">
+                    <div class="auth-header">
+                        <i class="fas fa-eagle"></i>
+                        <h2>تسجيل الدخول - Test Mode</h2>
+                        <p>وضع الاختبار - لا يوجد Firebase connection</p>
+                    </div>
+                    
+                    <div class="auth-form">
+                        <div class="form-group">
+                            <label for="test-email">البريد الإلكتروني</label>
+                            <input type="email" id="test-email" placeholder="test@example.com" value="test@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="test-password">كلمة المرور</label>
+                            <input type="password" id="test-password" placeholder="كلمة مرور" value="123456">
+                        </div>
+                        <button class="auth-btn" onclick="closeTestModal()">
+                            <i class="fas fa-sign-in-alt"></i>
+                            تسجيل الدخول (Test Only)
+                        </button>
+                    </div>
+                    
+                    <button class="auth-close" onclick="closeTestModal()">&times;</button>
+                </div>
+            `;
+            
+            document.body.appendChild(testModal);
+            
+            // Auto close after 5 seconds
+            setTimeout(() => {
+                if (testModal.parentNode) {
+                    testModal.remove();
+                }
+            }, 5000);
+        }
+        
+        function testSignupModal() {
+            console.log('اختبار Signup Modal');
+            
+            const testModal = document.createElement('div');
+            testModal.className = 'auth-modal';
+            testModal.style.display = 'block';
+            testModal.innerHTML = `
+                <div class="auth-container">
+                    <div class="auth-header">
+                        <i class="fas fa-user-plus"></i>
+                        <h2>إنشاء حساب - Test Mode</h2>
+                        <p>وضع الاختبار - لا يوجد Firebase connection</p>
+                    </div>
+                    
+                    <div class="auth-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="test-name">الاسم الكامل</label>
+                                <input type="text" id="test-name" placeholder="اسمك الكامل" value="مستخدم تجريبي">
+                            </div>
+                            <div class="form-group">
+                                <label for="test-role">نوع الحساب</label>
+                                <select id="test-role">
+                                    <option value="investor">مستثمر</option>
+                                    <option value="player">لاعب</option>
+                                    <option value="developer">مطور</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="test-email">البريد الإلكتروني</label>
+                            <input type="email" id="test-email" placeholder="أدخل بريدك الإلكتروني" value="test@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="test-password">كلمة المرور</label>
+                            <input type="password" id="test-password" placeholder="كلمة مرور قوية" value="123456">
+                        </div>
+                        <button class="auth-btn" onclick="closeTestModal()">
+                            <i class="fas fa-user-plus"></i>
+                            إنشاء حساب (Test Only)
+                        </button>
+                    </div>
+                    
+                    <button class="auth-close" onclick="closeTestModal()">&times;</button>
+                </div>
+            `;
+            
+            document.body.appendChild(testModal);
+        }
+        
+        function testUserProfile() {
+            console.log('اختبار User Profile');
+            
+            const testModal = document.createElement('div');
+            testModal.className = 'auth-modal';
+            testModal.style.display = 'block';
+            testModal.innerHTML = `
+                <div class="auth-container">
+                    <div class="auth-header">
+                        <i class="fas fa-user"></i>
+                        <h2>الملف الشخصي - Test Mode</h2>
+                        <p>وضع الاختبار - مستخدم وهمي</p>
+                    </div>
+                    
+                    <div class="auth-form">
+                        <div class="user-profile-display" style="text-align: center; padding: 20px;">
+                            <div class="user-avatar" style="width: 80px; height: 80px; font-size: 32px; margin: 0 auto 20px;">
+                                T
+                            </div>
+                            <h3>مستخدم تجريبي</h3>
+                            <p>test@example.com</p>
+                            <p>مستثمر</p>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button class="auth-btn" style="flex: 1;" onclick="closeTestModal()">
+                                <i class="fas fa-edit"></i>
+                                تعديل الملف
+                            </button>
+                            <button class="auth-btn" style="flex: 1; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);" onclick="closeTestModal()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                تسجيل الخروج
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="auth-close" onclick="closeTestModal()">&times;</button>
+                </div>
+            `;
+            
+            document.body.appendChild(testModal);
+        }
+        
+        function closeTestModal() {
+            const modals = document.querySelectorAll('.auth-modal');
+            modals.forEach(modal => {
+                if (modal.style.display === 'block') {
+                    modal.remove();
+                }
+            });
+        }
+        
+        // Auto close test modals when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('auth-modal')) {
+                closeTestModal();
+            }
+        });
+    </script>
+</body>
+</html>

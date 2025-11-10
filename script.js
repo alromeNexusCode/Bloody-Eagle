@@ -1204,36 +1204,36 @@ const AuthSystem = {
     // Setup form submissions
     setupFormSubmissions() {
         // Login form
-        const loginForm = document.getElementById('loginForm');
+        const loginForm = document.getElementById('login-form');
         if (loginForm) {
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 this.login(
-                    document.getElementById('loginEmail').value,
-                    document.getElementById('loginPassword').value
+                    document.getElementById('login-email').value,
+                    document.getElementById('login-password').value
                 );
             });
         }
         
         // Signup form
-        const signupForm = document.getElementById('signupForm');
+        const signupForm = document.getElementById('signup-form');
         if (signupForm) {
             signupForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 this.signup(
-                    document.getElementById('signupEmail').value,
-                    document.getElementById('signupPassword').value,
-                    document.getElementById('signupName').value
+                    document.getElementById('signup-email').value,
+                    document.getElementById('signup-password').value,
+                    document.getElementById('signup-name').value
                 );
             });
         }
         
         // Forgot password form
-        const forgotForm = document.getElementById('forgotForm');
+        const forgotForm = document.getElementById('forgot-form');
         if (forgotForm) {
             forgotForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                this.forgotPassword(document.getElementById('forgotEmail').value);
+                this.forgotPassword(document.getElementById('forgot-email').value);
             });
         }
     },
@@ -1241,24 +1241,24 @@ const AuthSystem = {
     // Show/hide modals
     showLoginModal() {
         this.hideAllModals();
-        const modal = document.getElementById('loginModal');
+        const modal = document.getElementById('login-modal');
         if (modal) modal.style.display = 'block';
     },
     
     showSignupModal() {
         this.hideAllModals();
-        const modal = document.getElementById('signupModal');
+        const modal = document.getElementById('signup-modal');
         if (modal) modal.style.display = 'block';
     },
     
     showForgotModal() {
         this.hideAllModals();
-        const modal = document.getElementById('forgotModal');
+        const modal = document.getElementById('forgot-modal');
         if (modal) modal.style.display = 'block';
     },
     
     showUserProfile() {
-        const modal = document.getElementById('userProfileModal');
+        const modal = document.getElementById('user-profile-modal');
         if (modal) modal.style.display = 'block';
     },
     
@@ -1348,6 +1348,9 @@ const AuthSystem = {
         if (form) {
             const submitBtn = form.querySelector('button[type="submit"]');
             if (submitBtn) {
+                if (!submitBtn.getAttribute('data-original-text')) {
+                    submitBtn.setAttribute('data-original-text', submitBtn.textContent);
+                }
                 submitBtn.textContent = 'جاري المعالجة...';
                 submitBtn.disabled = true;
             }
@@ -1359,7 +1362,8 @@ const AuthSystem = {
         if (form) {
             const submitBtn = form.querySelector('button[type="submit"]');
             if (submitBtn) {
-                submitBtn.textContent = submitBtn.getAttribute('data-original-text') || 'تسجيل الدخول';
+                const originalText = submitBtn.getAttribute('data-original-text') || 'تسجيل الدخول';
+                submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
             }
         }

@@ -188,25 +188,30 @@
                 
                 <!-- User Logged In Status -->
                 <div class="user-authenticated" id="user-authenticated" style="display: none;">
-                    <button class="user-btn" onclick="showDashboard()">
-                        <div class="user-avatar">
-                            <i class="fas fa-user"></i>
+                    <div class="user-profile" id="userProfile">
+                        <div class="user-profile-info" onclick="showUserProfile()">
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="user-info">
+                                <div class="user-name" id="userName">مرحباً</div>
+                                <div class="user-email" id="userEmail">user@example.com</div>
+                            </div>
                         </div>
-                        <span id="user-name-nav">مرحباً</span>
-                    </button>
-                    <div class="user-dropdown">
-                        <a href="#" onclick="showDashboard()">
-                            <i class="fas fa-tachometer-alt"></i>
-                            لوحة التحكم
-                        </a>
-                        <a href="#" onclick="showProfile()">
-                            <i class="fas fa-user-cog"></i>
-                            الملف الشخصي
-                        </a>
-                        <a href="#" onclick="logoutUser()">
-                            <i class="fas fa-sign-out-alt"></i>
-                            تسجيل الخروج
-                        </a>
+                        <div class="user-dropdown" id="userDropdown">
+                            <a href="#" onclick="showDashboard()">
+                                <i class="fas fa-tachometer-alt"></i>
+                                لوحة التحكم
+                            </a>
+                            <a href="#" onclick="showProfile()">
+                                <i class="fas fa-user-cog"></i>
+                                الملف الشخصي
+                            </a>
+                            <a href="#" onclick="logoutUser()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                تسجيل الخروج
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="hamburger">
@@ -651,6 +656,12 @@
                 </button>
             </div>
             
+            <div class="auth-links">
+                <a href="#" onclick="showForgotPassword()">نسيت كلمة المرور؟</a>
+                <span>•</span>
+                <a href="#" onclick="showSignupModal()">إنشاء حساب جديد</a>
+            </div>
+            
             <button class="auth-close" onclick="closeLoginModal()">&times;</button>
         </div>
     </div>
@@ -708,6 +719,73 @@
             
             <div class="auth-options">
                 <a href="#" onclick="showLogin()">لديك حساب بالفعل؟ تسجيل الدخول</a>
+            </div>
+            
+            <button class="auth-close" onclick="closeSignupModal()">&times;</button>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgot-modal" class="auth-modal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <i class="fas fa-key"></i>
+                <h2>استعادة كلمة المرور</h2>
+                <p>أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور</p>
+            </div>
+            
+            <form id="forgot-form" class="auth-form">
+                <div class="form-group">
+                    <label for="forgot-email">البريد الإلكتروني</label>
+                    <input type="email" id="forgot-email" required placeholder="أدخل بريدك الإلكتروني">
+                </div>
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    إرسال رابط الاستعادة
+                </button>
+            </form>
+            
+            <div class="auth-links">
+                <a href="#" onclick="showLogin()">تذكرت كلمة المرور؟ تسجيل الدخول</a>
+            </div>
+            
+            <button class="auth-close" onclick="closeSignupModal()">&times;</button>
+        </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div id="user-profile-modal" class="auth-modal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <i class="fas fa-user-cog"></i>
+                <h2>الملف الشخصي</h2>
+                <p>إدارة بياناتك الشخصية</p>
+            </div>
+            
+            <div class="user-profile-content">
+                <div class="user-profile-display">
+                    <div class="user-avatar" id="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 id="profile-name">اسم المستخدم</h3>
+                    <p id="profile-email">user@example.com</p>
+                    <p id="profile-role">نوع الحساب</p>
+                </div>
+                
+                <div class="auth-form">
+                    <div class="form-group">
+                        <label for="profile-display-name">الاسم المعروض</label>
+                        <input type="text" id="profile-display-name" placeholder="اسمك المعروض">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-bio">نبذة عني</label>
+                        <textarea id="profile-bio" rows="3" placeholder="اكتب نبذة عنك"></textarea>
+                    </div>
+                    <button type="button" class="auth-btn" onclick="closeSignupModal()">
+                        <i class="fas fa-save"></i>
+                        حفظ التغييرات
+                    </button>
+                </div>
             </div>
             
             <button class="auth-close" onclick="closeSignupModal()">&times;</button>
