@@ -57,8 +57,8 @@ echo ""
 echo "📱 فحوصات إضافية..."
 
 # Check for Firebase integration
-if grep -q "firebase" index.html; then
-    echo "✅ Firebase SDK Integration"
+if grep -q "firebase" index.html && grep -q "AIzaSyD1GxEXR-4th" script.js; then
+    echo "✅ Firebase SDK Integration + Credentials"
 else
     echo "❌ Firebase SDK Integration (غير موجود)"
 fi
@@ -84,13 +84,14 @@ echo "الملفات الأساسية: ✅ جاهزة"
 echo "نظام النماذج: ✅ جاهز" 
 echo "تصميم Responsive: ✅ جاهز"
 echo "دعم العربية: ✅ جاهز"
-echo "Firebase Integration: ⚠️ يحتاج Configuration"
+echo "Firebase Integration: ✅ مُكوَّن ومفعل"
 echo ""
 echo "📝 الخطوات التالية:"
-echo "1. إنشاء Firebase Project"
-echo "2. إضافة Credentials في script.js"
+echo "1. ✅ إنشاء Firebase Project"
+echo "2. ✅ إضافة Credentials في script.js" 
 echo "3. اختبار Registration/Login"
-echo "4. ربط Social Media Accounts"
+echo "4. تفعيل Social Media Authentication"
+echo "5. ربط Social Media Accounts"
 echo ""
 echo "🚀 النظام جاهز للاختبار!"
 
